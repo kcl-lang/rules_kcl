@@ -1,0 +1,24 @@
+name: Continuous Integration
+on:
+  # See https://docs.github.com/en/actions/reference/events-that-trigger-workflows.
+  pull_request:
+jobs:
+  bazel-source-inspection:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out VCS repository
+      uses: actions/checkout@v3
+    - name: Confirm Bazel files is formatted per "buildifier"
+      uses: thompsonja/bazel-buildifier@v0.4.0
+      with:
+        # See https://github.com/bazelbuild/buildtools/blob/master/WARNINGS.md.
+        warnings: -function-docstring,-module-docstring
+        buildifier_version: 6.1.0
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out VCS repository
+      uses: actions/checkout@v3
+    - name: Build KCL run rule example
+      shell: bash
+      run: cd examples/hello_world && bazel build //... --action_env=HOME=~

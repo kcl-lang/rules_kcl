@@ -1,0 +1,33 @@
+"bzlmod declaration for rules_kcl"
+
+module(
+    name = "org_kcl_lang_rules_kcl",
+    version = "0.0.0",
+    compatibility_level = 1,
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.4.2")
+bazel_dep(name = "platforms", version = "0.0.5")
+
+bazel_dep(name = "aspect_bazel_lib", version = "1.34.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "6.1.0", dev_dependency = True)
+
+kcl = use_extension(
+    "//kcl:extensions.bzl",
+    "kcl",
+    dev_dependency = True,
+)
+kcl.toolchain(name = "kcl")
+use_repo(kcl, "kcl_toolchains")
+
+register_toolchains(
+    "@kcl_toolchains//:all",
+    dev_dependency = True,
+)
+
+version_test = use_extension(
+    "//kcl/tests:version_test.bzl",
+    "version_test",
+    dev_dependency = True,
+)
+use_repo(version_test, "all_kcl_versions")
