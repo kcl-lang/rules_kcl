@@ -25,7 +25,7 @@ write_source_file(
 ```
 
 ```shell
-bazel build
+bazel build //:hello.yaml.update --action_env=HOME=~
 ```
 
 ## Build Rules
