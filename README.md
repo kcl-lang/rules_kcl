@@ -8,12 +8,19 @@ Write a `BUILD.bazel` file and run the following command
 
 ```bazel
 load("@org_kcl_lang_rules_kcl//kcl:defs.bzl", "kcl_run")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
 
 kcl_run(
-    name = "kcl.run.yaml",
+    name = "hello.yaml.write",
     files = ["main.k"],
     format = "yaml",
-    output = "hello.yaml",
+)
+
+write_source_file(
+    name = "hello.yaml.update",
+    in_file = ":hello.yaml.write",
+    out_file = "hello.yaml",
+    suggested_update_target = "//:hello.yaml.update",
 )
 ```
 
