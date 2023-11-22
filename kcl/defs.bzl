@@ -6,12 +6,39 @@ load("@rules_kcl//kcl:defs.bzl", ...)
 ```
 """
 
+def _collect_runfiles(ctx, direct_files, indirect_targets):
+    """Builds a runfiles object for the current target.
+
+    Source:
+      https://github.com/jayconrod/rules_go_simple/blob/43b692d481140486513b00f862fbde9938f90a77/internal/rules.bzl#L323
+
+    Args:
+        ctx: analysis context.
+        direct_files: list of Files to include directly.
+        indirect_targets: list of Targets to gather transitive runfiles from.
+    Returns:
+        A runfiles object containing direct_files and runfiles from
+        indirect_targets. The files from indirect_targets won't be included
+        unless they are also included in runfiles.
+    """
+    return ctx.runfiles(
+        files = direct_files,
+        # Note that we are using `data_runfiles` rather than `default_runfiles`.
+        # Even though, this is in contrary with the bazel third recomendation from [1],
+        # `filegroup` rule does NOT respect the fact that `srcs` should be added also
+        # to the `default_runfiles`.
+        # [1] https://bazel.build/extending/rules#runfiles_features_to_avoid
+        transitive_files = depset(
+            transitive = [target[DefaultInfo].data_runfiles.files for target in indirect_targets],
+        ),
+    )
+
 def _kcl_run_impl(ctx):
     kcl = ctx.toolchains["//kcl:toolchain_type"].kcl_info
 
     args = ctx.actions.args()
     args.add_all(["run"])
-    args.add_all(ctx.attr.files)
+    args.add_all(ctx.files.files)
     args.add_all([
         "--format",
         ctx.attr.format,
@@ -57,18 +84,19 @@ def _kcl_run_impl(ctx):
     if ctx.attr.no_style:
         args.add_all(["--no_style"])
 
+    runfiles = _collect_runfiles(
+        ctx,
+        direct_files = ctx.files.files,
+        indirect_targets = [],
+    )
+
     ctx.actions.run(
+        inputs = runfiles.files,
         arguments = [args],
         executable = kcl.binary,
         toolchain = "//kcl:toolchain_type",
         outputs = [output],
         use_default_shell_env = True,
-        execution_requirements = {
-            "no-sandbox": "1",
-            "no-cache": "1",
-            "no-remote": "1",
-            "local": "1",
-        },
     )
 
     return [
@@ -78,8 +106,9 @@ def _kcl_run_impl(ctx):
     ]
 
 _kcl_run_attrs = {
-    "files": attr.string_list(
+    "files": attr.label_list(
         doc = "Input KCL filenames",
+        allow_files = [".k"],
     ),
     "codes": attr.string_list(
         doc = "Input KCL codes",
