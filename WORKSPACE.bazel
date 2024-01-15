@@ -10,8 +10,8 @@ load("//kcl:repositories.bzl", "kcl_register_toolchains", "rules_kcl_dependencie
 rules_kcl_dependencies()
 
 kcl_register_toolchains(
-    name = "kcl_0_7_0_alpha_2",
-    kcl_version = "0.7.0-alpha.2",
+    name = "kcl_0_7_4",
+    kcl_version = "0.7.4",
 )
 
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")

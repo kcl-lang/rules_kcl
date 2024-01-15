@@ -67,7 +67,7 @@ kcl_repositories = repository_rule(
 def kcl_register_toolchains(name, kcl_version, register = True, **kwargs):
     """Convenience macro for users which does typical setup.
 
-    - create a repository for each built-in platform like "kcl-v0.7.0-alpha.2-darwin-amd64.tar.gz" -
+    - create a repository for each built-in platform like "kcl-v0.7.4-darwin-amd64.tar.gz" -
       this repository is lazily fetched when KCL is needed for that platform.
     - create a repository exposing toolchains for each platform like "kcl_platforms"
     - register a toolchain pointing at each platform
