@@ -1,7 +1,10 @@
 name: Continuous Integration
 on:
-  # See https://docs.github.com/en/actions/reference/events-that-trigger-workflows.
   pull_request:
+  push:
+    branches:
+      - main
+      - "release-*"
 jobs:
   bazel-source-inspection:
     runs-on: ubuntu-latest
