@@ -10,7 +10,7 @@ TOOL_VERSIONS = {
         },
         "kcl-amd64-linux": {
             "url": "https://github.com/kcl-lang/cli/releases/download/v0.7.4/kcl-v0.7.4-linux-amd64.tar.gz",
-            "sha256": "5c9b12bf3c62fcc092e7438c021d3b0dd5fc5e91b0c304b45f0c807ac5d4509a",
+            "sha256": "c2516227c417e0635c9ffd0112e477997ed02e96f6b3fad5e1c227c2e502052b",
         },
         "kcl-arm64-linux": {
             "url": "https://github.com/kcl-lang/cli/releases/download/v0.7.4/kcl-v0.7.4-linux-amd64.tar.gz",
