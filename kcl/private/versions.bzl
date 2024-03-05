@@ -6,7 +6,7 @@ TOOL_VERSIONS = {
         },
         "kcl-arm64-darwin": {
             "url": "https://github.com/kcl-lang/cli/releases/download/v0.7.4/kcl-v0.7.4-darwin-arm64.tar.gz",
-            "sha256": "d33bdb7ec63c53fc3319011e9626c0505647405c22c2a1851351e975d9d41ea1",
+            "sha256": "0d3bfddfe791a3fd14a65ee46ba8e7a43336041f00557e9518ee881306717821",
         },
         "kcl-amd64-linux": {
             "url": "https://github.com/kcl-lang/cli/releases/download/v0.7.4/kcl-v0.7.4-linux-amd64.tar.gz",
