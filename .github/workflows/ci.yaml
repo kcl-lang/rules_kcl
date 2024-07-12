@@ -18,7 +18,7 @@ jobs:
         warnings: -function-docstring,-module-docstring
         buildifier_version: 6.1.0
   build-test:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, macos-latest, macos-12]
     steps:
     - name: Check out VCS repository
       uses: actions/checkout@v3
