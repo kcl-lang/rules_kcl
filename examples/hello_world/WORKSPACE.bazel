@@ -25,5 +25,5 @@ rules_kcl_dependencies()
 
 kcl_register_toolchains(
     name = "kcl_0_9_1",
-    kcl_version = "0.9.1",
+    kcl_version = "0.10.0-beta.1",
 )
