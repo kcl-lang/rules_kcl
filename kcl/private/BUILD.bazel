@@ -1,5 +1,18 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
+sh_binary(
+    name = "kcl_env",
+    srcs = ["kcl_env.sh"],
+    visibility = ["//visibility:public"],
+)
+
+sh_test(
+    name = "kcl_env_test",
+    size = "small",
+    srcs = ["kcl_env_test.sh"],
+    data = ["kcl_env.sh"],
+)
+
 bzl_library(
     name = "toolchains_repo",
     srcs = ["toolchains_repo.bzl"],
