@@ -7,6 +7,20 @@ kcl_run(
     format = "yaml",
 )
 
+# Independent targets. `bazel build //...` schedules these together so a shared
+# package cache would serialize them.
+kcl_run(
+    name = "parallel_a",
+    files = ["parallel_a.k"],
+    format = "yaml",
+)
+
+kcl_run(
+    name = "parallel_b",
+    files = ["parallel_b.k"],
+    format = "yaml",
+)
+
 write_source_file(
     name = "hello.yaml.update",
     in_file = ":hello.yaml.write",

@@ -90,13 +90,19 @@ def _kcl_run_impl(ctx):
         indirect_targets = [],
     )
 
+    # kcl/private/kcl_env.sh assigns a private KCL_PKG_PATH and KCL_CACHE_PATH.
+    # kcl run holds $KCL_PKG_PATH/.kpm/config/package-cache for the whole
+    # process, so each action locks only its own cache.
     ctx.actions.run(
         inputs = runfiles.files,
-        arguments = [args],
-        executable = kcl.binary,
+        arguments = [kcl.binary.path, args],
+        executable = ctx.executable._kcl_env,
+        tools = [kcl.binary],
         toolchain = "//kcl:toolchain_type",
         outputs = [output],
-        use_default_shell_env = True,
+        use_default_shell_env = False,
+        mnemonic = "KclRun",
+        progress_message = "Running KCL %{label}",
     )
 
     return [
@@ -168,6 +174,12 @@ _kcl_run_attrs = {
     "no_style": attr.bool(
         doc = "Set to prohibit output of command line waiting styles, including colors, etc. (optional)",
         default = False,
+    ),
+    "_kcl_env": attr.label(
+        doc = "Wrapper that gives this action a private KCL package and compilation cache.",
+        default = Label("//kcl/private:kcl_env"),
+        executable = True,
+        cfg = "exec",
     ),
 }
 

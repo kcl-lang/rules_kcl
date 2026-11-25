@@ -24,9 +24,13 @@ write_source_file(
 )
 ```
 
+From the `examples/hello_world` workspace:
+
 ```shell
-bazel build //:hello.yaml.update --action_env=HOME=~
+bazel run //:hello.yaml.update
 ```
+
+`kcl_run` runs in parallel. Each action sets `KCL_PKG_PATH` and `KCL_CACHE_PATH` to a private temporary directory, so each `kcl run` locks only its own `package-cache`. The KCL runtime is unpacked once under a per-user temporary home.
 
 ## Build Rules
 
@@ -64,7 +68,7 @@ Run `kcl run --help` to get more information.
 + Build all Bazel targets
 
 ```shell
-bazel build //... --action_env=HOME=~
+bazel build //...
 ```
 
 + Testing
